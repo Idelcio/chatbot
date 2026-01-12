@@ -19,70 +19,51 @@ npm start
 
 Na primeira execução, um QR Code será exibido no terminal. Escaneie com seu WhatsApp para conectar.
 
-## 🌐 Deploy na Hostinger
+## 🌐 Deploy no Render.com
 
-### 1. Fazer upload dos arquivos
+Este projeto está configurado com **deploy automático** no Render.com.
 
-Faça upload dos seguintes arquivos para o servidor Hostinger:
-- `chatbot.js`
-- `package.json`
-- `ecosystem.config.js`
+### Como funciona:
 
-**NÃO** faça upload de:
-- `node_modules/` (será instalado no servidor)
-- `.wwebjs_auth/` (será criado no servidor)
-- `.wwebjs_cache/` (será criado no servidor)
+1. **Faça suas alterações** no código localmente
+2. **Commit e push** para o GitHub:
+   ```bash
+   git add .
+   git commit -m "Descrição das alterações"
+   git push
+   ```
+3. **Deploy automático** - O Render detecta o push e faz o deploy automaticamente!
 
-### 2. Conectar via SSH
+### Primeira configuração (já feita):
 
-Acesse o terminal SSH da Hostinger através do painel de controle.
+O serviço já está configurado no Render.com com:
+- ✅ Repositório GitHub conectado
+- ✅ Deploy automático habilitado
+- ✅ Build command: `npm install`
+- ✅ Start command: `npm start`
 
-### 3. Instalar dependências
+### Monitorar o deploy:
 
-```bash
-cd ~/domains/seu-dominio.com/public_html/chatbot
-npm install
-```
+1. Acesse: https://dashboard.render.com
+2. Faça login
+3. Clique no serviço do chatbot
+4. Veja a aba **"Events"** para histórico de deploys
+5. Veja a aba **"Logs"** para logs em tempo real
 
-### 4. Iniciar com PM2
+### Escanear QR Code (primeira vez):
 
-```bash
-# Iniciar o chatbot
-npm run pm2:start
+Na primeira execução ou após limpar a sessão:
 
-# Verificar status
-pm2 status
+1. Acesse os **Logs** no dashboard do Render
+2. Procure pelo QR Code (será exibido como caracteres ASCII)
+3. Abra o WhatsApp no celular
+4. Vá em **Configurações** → **Aparelhos conectados**
+5. Toque em **Conectar um aparelho**
+6. Escaneie o QR Code que apareceu nos logs
 
-# Ver logs
-npm run pm2:logs
+### Para mais detalhes:
 
-# Parar o chatbot
-npm run pm2:stop
-
-# Reiniciar o chatbot
-npm run pm2:restart
-```
-
-### 5. Escanear QR Code
-
-Na primeira execução, você precisa escanear o QR Code:
-
-```bash
-# Ver os logs para encontrar o QR Code
-pm2 logs chatbot-otimizare
-```
-
-O QR Code aparecerá nos logs. Escaneie com seu WhatsApp.
-
-### 6. Configurar PM2 para iniciar automaticamente
-
-```bash
-# Salvar a configuração atual do PM2
-pm2 save
-
-# Configurar PM2 para iniciar no boot
-pm2 startup
-```
+Veja o arquivo [DEPLOY.md](DEPLOY.md) para instruções completas.
 
 ## 📝 Scripts Disponíveis
 
@@ -123,24 +104,25 @@ O chatbot possui um menu interativo com as seguintes opções:
 ## 🐛 Troubleshooting
 
 ### QR Code não aparece
-```bash
-pm2 logs chatbot-otimizare --lines 100
-```
+Acesse os logs no dashboard do Render:
+1. Vá para https://dashboard.render.com
+2. Clique no serviço do chatbot
+3. Aba "Logs"
+4. Procure pelo QR Code nos logs
 
 ### Bot não responde
-```bash
-pm2 restart chatbot-otimizare
-pm2 logs chatbot-otimizare
-```
+1. Verifique se o serviço está rodando no dashboard do Render
+2. Veja os logs para identificar erros
+3. Se necessário, faça um redeploy manual:
+   - No dashboard, clique em "Manual Deploy" → "Deploy latest commit"
 
 ### Erro de memória
-O PM2 está configurado para reiniciar automaticamente se usar mais de 500MB de RAM.
+O Render monitora automaticamente o uso de memória. Se houver problemas:
+1. Verifique os logs
+2. Entre em contato com o suporte do Render se necessário
 
 ### Desconexão do WhatsApp
-Se o WhatsApp desconectar, o bot tentará reconectar automaticamente. Verifique os logs:
-```bash
-pm2 logs chatbot-otimizare
-```
+Se o WhatsApp desconectar, o bot tentará reconectar automaticamente. Verifique os logs no dashboard do Render para mais informações.
 
 ## 📞 Contatos Configurados
 
