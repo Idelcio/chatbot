@@ -1,0 +1,34 @@
+{
+  "name": "chatbot-otimizare",
+  "version": "1.0.0",
+  "description": "Chatbot WhatsApp para Otimizare",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "chatbot": "node chatbot.js",
+    "dev": "node chatbot.js",
+    "verify": "node verificar-deploy.js",
+    "pm2:start": "pm2 start chatbot.js --name chatbot-otimizare",
+    "pm2:stop": "pm2 stop chatbot-otimizare",
+    "pm2:restart": "pm2 restart chatbot-otimizare",
+    "pm2:logs": "pm2 logs chatbot-otimizare"
+  },
+  "keywords": [
+    "whatsapp",
+    "chatbot",
+    "otimizare"
+  ],
+  "author": "Otimizare",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "moment-timezone": "^0.5.45",
+    "openai": "^4.78.1",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "1.34.2",
+    "pm2": "^5.3.0"
+  }
+}
