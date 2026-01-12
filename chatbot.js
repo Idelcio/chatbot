@@ -50,9 +50,9 @@ const TEMPO_EXPIRACAO_MS = 2 * 60 * 60 * 1000; // 2h
 const montarMenuPrincipal = () => {
   const saudacao = getSaudacao();
   return (
-    `${saudacao}, espero que esteja bem!\n\n` +
+    `Olá, espero que esteja bem!\n\n` +
     `Eu sou o Assistente Virtual da Otimizare e vou te encaminhar para a pessoa certa.\n\n` +
-    `Escolha uma opção abaixo:\n\n` +
+    `Escolha uma opção abaixo *e aguarde*:\n\n` +
     `Apenas digite e envie o número da opção desejada:\n` +
     `1 - Quero saber mais sobre serviços e equipamentos\n` +
     `2 - Já sou cliente da Otimizare e quero resolver questões administrativas ou financeiras\n` +
@@ -177,7 +177,7 @@ client.on("message", async (msg) => {
       await client.sendMessage(
         msg.from,
         "No momento eu não consigo reproduzir áudios, fotos ou vídeos. 🙂\n\n" +
-          "Por favor, responda usando as opções do *menu*."
+        "Por favor, responda usando as opções do *menu*."
       );
 
       const menu = montarMenuPrincipal();
@@ -221,13 +221,13 @@ client.on("message", async (msg) => {
         await client.sendMessage(
           msg.from,
           "Perfeito! 👌\n\n" +
-            "O responsável é:\n\n" +
-            "*Lucas Morim*\n" +
-            "Diretor Comercial – Otimizare\n" +
-            "📞 WhatsApp: (51) 9292-2628\n" +
-            "🔗 https://wa.me/555192922628\n\n" +
-            "👉 Clique no link acima para falar diretamente com ele.\n\n" +
-            "Se precisar, digite *voltar* para retornar ao menu."
+          "O responsável é:\n\n" +
+          "*Lucas Morim*\n" +
+          "Diretor Comercial – Otimizare\n" +
+          "📞 WhatsApp: (51) 9292-2628\n" +
+          "🔗 https://wa.me/555192922628\n\n" +
+          "👉 Clique no link acima para falar diretamente com ele.\n\n" +
+          "Se precisar, digite *voltar* para retornar ao menu."
         );
 
         estadoUsuario[msg.from] = null;
@@ -243,13 +243,13 @@ client.on("message", async (msg) => {
         await client.sendMessage(
           msg.from,
           "Perfeito! 👌\n\n" +
-            "Para atendimento em *São Paulo*, o responsável é:\n\n" +
-            "*João Soares*\n" +
-            "Gestor Comercial – Região SP\n" +
-            "📞 WhatsApp: (19) 99718-8587\n" +
-            "🔗 https://wa.me/5519997188587\n\n" +
-            "👉 Clique no link acima para falar diretamente com ele.\n\n" +
-            "Se precisar, digite *voltar* para retornar ao menu."
+          "Para atendimento em *São Paulo*, o responsável é:\n\n" +
+          "*João Soares*\n" +
+          "Gestor Comercial – Região SP\n" +
+          "📞 WhatsApp: (19) 99718-8587\n" +
+          "🔗 https://wa.me/5519997188587\n\n" +
+          "👉 Clique no link acima para falar diretamente com ele.\n\n" +
+          "Se precisar, digite *voltar* para retornar ao menu."
         );
 
         estadoUsuario[msg.from] = null;
@@ -282,13 +282,13 @@ client.on("message", async (msg) => {
       await client.sendMessage(
         msg.from,
         "Perfeito! 👌\n\n" +
-          "Para tratar de questões *administrativas ou financeiras*, o responsável é:\n\n" +
-          "*Lucas Morim*\n" +
-          "Diretor Comercial – Otimizare\n" +
-          "📞 WhatsApp: (51) 9292-2628\n" +
-          "🔗 https://wa.me/555192922628\n\n" +
-          "👉 Clique no link acima para falar diretamente com ele.\n\n" +
-          "Se precisar, digite *voltar* para retornar ao menu."
+        "Para tratar de questões *administrativas ou financeiras*, o responsável é:\n\n" +
+        "*Lucas Morim*\n" +
+        "Diretor Comercial – Otimizare\n" +
+        "📞 WhatsApp: (51) 9292-2628\n" +
+        "🔗 https://wa.me/555192922628\n\n" +
+        "👉 Clique no link acima para falar diretamente com ele.\n\n" +
+        "Se precisar, digite *voltar* para retornar ao menu."
       );
 
       estadoUsuario[msg.from] = null;
@@ -305,35 +305,35 @@ client.on("message", async (msg) => {
       await client.sendMessage(
         msg.from,
         "Perfeito! 👌\n\n" +
-          "Para enviar seu currículo para a Otimizare, encaminhe para:\n\n" +
-          "📧 *recrutamento@otimizare.com*\n\n" +
-          "Se possível, envie em PDF e informe a área de interesse.\n\n" +
-          "Se precisar, digite *voltar* para retornar ao menu."
+        "Para enviar seu currículo para a Otimizare, encaminhe para:\n\n" +
+        "📧 *recrutamento@otimizare.com*\n\n" +
+        "Se possível, envie em PDF e informe a área de interesse.\n\n" +
+        "Se precisar, digite *voltar* para retornar ao menu."
       );
 
       estadoUsuario[msg.from] = null;
       ultimoMenu[msg.from] = montarMenuPrincipal();
       return;
     }
-  // =====================================
-  // FALLBACK GERAL (menu principal):
-  // no menu principal, não diz "não entendi", só reenvia o menu
-  // =====================================
+    // =====================================
+    // FALLBACK GERAL (menu principal):
+    // no menu principal, não diz "não entendi", só reenvia o menu
+    // =====================================
 
-  // se estiver NO MENU PRINCIPAL (sem estado)
+    // se estiver NO MENU PRINCIPAL (sem estado)
     if (!estadoUsuario[msg.from]) {
       const menu = montarMenuPrincipal();
       await enviarEMemorizarMenu(msg.from, chat, menu);
 
-  return;
-}
+      return;
+    }
 
-  // se estiver em algum estado (ex.: submenu), aí sim usa a mensagem de erro e volta pro início
-  estadoUsuario[msg.from] = null;
-  const menu = montarMenuPrincipal();
+    // se estiver em algum estado (ex.: submenu), aí sim usa a mensagem de erro e volta pro início
+    estadoUsuario[msg.from] = null;
+    const menu = montarMenuPrincipal();
     await client.sendMessage(msg.from, "Não entendi. 🙂\n\nVamos começar de novo pelo menu principal:");
     await enviarEMemorizarMenu(msg.from, chat, menu);
-  return;
+    return;
 
   } catch (error) {
     console.error("Erro no handler:", error);
