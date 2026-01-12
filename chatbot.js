@@ -67,7 +67,7 @@ const MENU_REGIOES =
   "2 - Santa Catarina\n" +
   "3 - São Paulo\n" +
   "4 - Outras regiões\n\n" +
-  "Basta digitar e enviar o número correspondente.\n\n" +
+  "Basta digitar o número correspondente *e aguarde*.\n\n" +
   "Se precisar, digite *voltar* para retornar ao menu.";
 
 // =====================================
