@@ -50,9 +50,9 @@ const TEMPO_EXPIRACAO_MS = 2 * 60 * 60 * 1000; // 2h
 const montarMenuPrincipal = () => {
   const saudacao = getSaudacao();
   return (
-    `Olá, espero que esteja bem!\n\n` +
+    `${saudacao}, espero que esteja bem!\n\n` +
     `Eu sou o Assistente Virtual da Otimizare e vou te encaminhar para a pessoa certa.\n\n` +
-    `Escolha uma opção abaixo *e aguarde*:\n\n` +
+    `Escolha uma opção abaixo:\n\n` +
     `Apenas digite e envie o número da opção desejada:\n` +
     `1 - Quero saber mais sobre serviços e equipamentos\n` +
     `2 - Já sou cliente da Otimizare e quero resolver questões administrativas ou financeiras\n` +
@@ -67,7 +67,7 @@ const MENU_REGIOES =
   "2 - Santa Catarina\n" +
   "3 - São Paulo\n" +
   "4 - Outras regiões\n\n" +
-  "Basta digitar o número correspondente *e aguarde*.\n\n" +
+  "Basta digitar e enviar o número correspondente.\n\n" +
   "Se precisar, digite *voltar* para retornar ao menu.";
 
 // =====================================
@@ -213,7 +213,7 @@ client.on("message", async (msg) => {
     // SUBMENU: REGIÕES (estado op1_escolhendo_regiao)
     // =====================================
     if (estadoUsuario[msg.from] === "op1_escolhendo_regiao") {
-      if (texto === "1" || texto === "2" || texto === "4") {
+      if (texto === "4") {
         await delay(300);
         await chat.sendStateTyping();
         await delay(900);
@@ -234,6 +234,52 @@ client.on("message", async (msg) => {
         ultimoMenu[msg.from] = montarMenuPrincipal();
         return;
       }
+
+      if (texto === "1") {
+        await delay(300);
+        await chat.sendStateTyping();
+        await delay(900);
+
+        await client.sendMessage(
+          msg.from,
+          "Perfeito! 👌\n\n" +
+          "Para atendimento no *Rio Grande do Sul*, o responsável é:\n\n" +
+          "*Lucas Morim*\n" +
+          "Diretor Comercial – Otimizare\n" +
+          "📞 WhatsApp: (51) 9292-2628\n" +
+          "🔗 https://wa.me/555192922628\n\n" +
+          "👉 Clique no link acima para falar diretamente com ele.\n\n" +
+          "Se precisar, digite *voltar* para retornar ao menu."
+        );
+
+        estadoUsuario[msg.from] = null;
+        ultimoMenu[msg.from] = montarMenuPrincipal();
+        return;
+      }
+
+
+      if (texto === "2") {
+        await delay(300);
+        await chat.sendStateTyping();
+        await delay(900);
+
+        await client.sendMessage(
+          msg.from,
+          "Perfeito! 👌\n\n" +
+          "Para atendimento em *Santa Catarina*, o responsável é:\n\n" +
+          "*Lucas Morim*\n" +
+          "Diretor Comercial – Otimizare\n" +
+          "📞 WhatsApp: (47) 9289-7397\n" +
+          "🔗 https://wa.me/554792897397\n\n" +
+          "👉 Clique no link acima para falar diretamente com ele.\n\n" +
+          "Se precisar, digite *voltar* para retornar ao menu."
+        );
+
+        estadoUsuario[msg.from] = null;
+        ultimoMenu[msg.from] = montarMenuPrincipal();
+        return;
+      }
+
 
       if (texto === "3") {
         await delay(300);
@@ -305,9 +351,9 @@ client.on("message", async (msg) => {
       await client.sendMessage(
         msg.from,
         "Perfeito! 👌\n\n" +
-        "Para enviar seu currículo para a Otimizare, encaminhe para:\n\n" +
+        "Envie seu currículo por e-mail para:\n\n" +
         "📧 *recrutamento@otimizare.com*\n\n" +
-        "Se possível, envie em PDF e informe a área de interesse.\n\n" +
+        "Se possível, envie em PDF, informe a área de interesse e se apresente, fale um pouco sobre você e/ou sua experiência, no corpo do e-mail.\n\n" +
         "Se precisar, digite *voltar* para retornar ao menu."
       );
 
