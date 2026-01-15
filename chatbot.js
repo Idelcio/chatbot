@@ -77,20 +77,10 @@ const enviarEMemorizarMenu = async (msg, textoMenu) => {
   ultimoMenu[msg.from] = textoMenu;
 
   try {
-    const chat = await msg.getChat();
-    await delay(300);
-    await chat.sendStateTyping();
-    await delay(900);
-
+    await delay(500);
     await msg.reply(textoMenu);
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error.message);
-    // Fallback: tenta enviar direto
-    try {
-      await msg.reply(textoMenu);
-    } catch (fallbackError) {
-      console.error("Erro no fallback:", fallbackError.message);
-    }
   }
 };
 
@@ -99,21 +89,13 @@ const enviarEMemorizarMenu = async (msg, textoMenu) => {
 // =====================================
 const naoEntendiEReenviaMenuAtual = async (msg) => {
   try {
-    const chat = await msg.getChat();
-    await delay(300);
-    await chat.sendStateTyping();
-    await delay(900);
-
+    await delay(500);
     await msg.reply(
       "Não entendi. 🙂\n\nPor favor, responda usando as opções do menu."
     );
 
     const menu = ultimoMenu[msg.from] || montarMenuPrincipal();
-
-    await delay(200);
-    await chat.sendStateTyping();
-    await delay(700);
-
+    await delay(500);
     await msg.reply(menu);
   } catch (error) {
     console.error("Erro ao enviar mensagem de fallback:", error.message);
@@ -185,9 +167,7 @@ client.on("message", async (msg) => {
       estadoUsuario[msg.from] = null;
       menuEnviado[msg.from] = true;
 
-      await delay(300);
-      await chat.sendStateTyping();
-      await delay(900);
+      await delay(500);
 
       await msg.reply(
         "No momento eu não consigo reproduzir áudios, fotos ou vídeos. 🙂\n\n" +
@@ -228,10 +208,8 @@ client.on("message", async (msg) => {
     // =====================================
     if (estadoUsuario[msg.from] === "op1_escolhendo_regiao") {
       if (texto === "4") {
-        await delay(300);
-        await chat.sendStateTyping();
-        await delay(900);
-
+        await delay(500);
+
         await msg.reply(
           "Perfeito! 👌\n\n" +
           "O responsável é:\n\n" +
@@ -249,10 +227,8 @@ client.on("message", async (msg) => {
       }
 
       if (texto === "1") {
-        await delay(300);
-        await chat.sendStateTyping();
-        await delay(900);
-
+        await delay(500);
+
         await msg.reply(
           "Perfeito! 👌\n\n" +
           "Para atendimento no *Rio Grande do Sul*, o responsável é:\n\n" +
@@ -271,10 +247,8 @@ client.on("message", async (msg) => {
 
 
       if (texto === "2") {
-        await delay(300);
-        await chat.sendStateTyping();
-        await delay(900);
-
+        await delay(500);
+
         await msg.reply(
           "Perfeito! 👌\n\n" +
           "Para atendimento em *Santa Catarina*, o responsável é:\n\n" +
@@ -293,10 +267,8 @@ client.on("message", async (msg) => {
 
 
       if (texto === "3") {
-        await delay(300);
-        await chat.sendStateTyping();
-        await delay(900);
-
+        await delay(500);
+
         await msg.reply(
           "Perfeito! 👌\n\n" +
           "Para atendimento em *São Paulo*, o responsável é:\n\n" +
@@ -331,10 +303,8 @@ client.on("message", async (msg) => {
 
     // 2 - Cliente (adm/financeiro) -> Lucas
     if (texto === "2") {
-      await delay(300);
-      await chat.sendStateTyping();
-      await delay(900);
-
+      await delay(500);
+
       await msg.reply(
         "Perfeito! 👌\n\n" +
         "Para tratar de questões *administrativas ou financeiras*, o responsável é:\n\n" +
@@ -353,10 +323,8 @@ client.on("message", async (msg) => {
 
     // 3 - Currículos
     if (texto === "3") {
-      await delay(300);
-      await chat.sendStateTyping();
-      await delay(900);
-
+      await delay(500);
+
       await msg.reply(
         "Perfeito! 👌\n\n" +
         "Envie seu currículo por e-mail para:\n\n" +
