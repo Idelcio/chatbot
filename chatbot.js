@@ -78,7 +78,7 @@ const enviarEMemorizarMenu = async (msg, textoMenu) => {
 
   try {
     await delay(500);
-    await msg.reply(textoMenu);
+    await client.sendMessage(msg.from, textoMenu, { sendSeen: false });
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error.message);
   }
@@ -90,13 +90,11 @@ const enviarEMemorizarMenu = async (msg, textoMenu) => {
 const naoEntendiEReenviaMenuAtual = async (msg) => {
   try {
     await delay(500);
-    await msg.reply(
-      "Não entendi. 🙂\n\nPor favor, responda usando as opções do menu."
-    );
+    await client.sendMessage(msg.from, "Não entendi. 🙂\n\nPor favor, responda usando as opções do menu.", { sendSeen: false });
 
     const menu = ultimoMenu[msg.from] || montarMenuPrincipal();
     await delay(500);
-    await msg.reply(menu);
+    await client.sendMessage(msg.from, menu, { sendSeen: false });
   } catch (error) {
     console.error("Erro ao enviar mensagem de fallback:", error.message);
   }
@@ -169,10 +167,9 @@ client.on("message", async (msg) => {
 
       await delay(500);
 
-      await msg.reply(
+      await client.sendMessage(msg.from,
         "No momento eu não consigo reproduzir áudios, fotos ou vídeos. 🙂\n\n" +
-        "Por favor, responda usando as opções do *menu*."
-      );
+        "Por favor, responda usando as opções do *menu*.", { sendSeen: false });
 
       const menu = montarMenuPrincipal();
       await enviarEMemorizarMenu(msg, menu);
@@ -208,9 +205,11 @@ client.on("message", async (msg) => {
     // =====================================
     if (estadoUsuario[msg.from] === "op1_escolhendo_regiao") {
       if (texto === "4") {
-        await delay(500);
-
-        await msg.reply(
+        await delay(500);
+
+
+
+        await client.sendMessage(msg.from,
           "Perfeito! 👌\n\n" +
           "O responsável é:\n\n" +
           "*Lucas Morim*\n" +
@@ -218,8 +217,7 @@ client.on("message", async (msg) => {
           "📞 WhatsApp: (51) 9292-2628\n" +
           "🔗 https://wa.me/555192922628\n\n" +
           "👉 Clique no link acima para falar diretamente com ele.\n\n" +
-          "Se precisar, digite *voltar* para retornar ao menu."
-        );
+          "Se precisar, digite *voltar* para retornar ao menu.", { sendSeen: false });
 
         estadoUsuario[msg.from] = null;
         ultimoMenu[msg.from] = montarMenuPrincipal();
@@ -227,9 +225,11 @@ client.on("message", async (msg) => {
       }
 
       if (texto === "1") {
-        await delay(500);
-
-        await msg.reply(
+        await delay(500);
+
+
+
+        await client.sendMessage(msg.from,
           "Perfeito! 👌\n\n" +
           "Para atendimento no *Rio Grande do Sul*, o responsável é:\n\n" +
           "*Lucas Morim*\n" +
@@ -237,8 +237,7 @@ client.on("message", async (msg) => {
           "📞 WhatsApp: (51) 9292-2628\n" +
           "🔗 https://wa.me/555192922628\n\n" +
           "👉 Clique no link acima para falar diretamente com ele.\n\n" +
-          "Se precisar, digite *voltar* para retornar ao menu."
-        );
+          "Se precisar, digite *voltar* para retornar ao menu.", { sendSeen: false });
 
         estadoUsuario[msg.from] = null;
         ultimoMenu[msg.from] = montarMenuPrincipal();
@@ -247,9 +246,11 @@ client.on("message", async (msg) => {
 
 
       if (texto === "2") {
-        await delay(500);
-
-        await msg.reply(
+        await delay(500);
+
+
+
+        await client.sendMessage(msg.from,
           "Perfeito! 👌\n\n" +
           "Para atendimento em *Santa Catarina*, o responsável é:\n\n" +
           "*Lucas Morim*\n" +
@@ -257,8 +258,7 @@ client.on("message", async (msg) => {
           "📞 WhatsApp: (47) 9289-7397\n" +
           "🔗 https://wa.me/554792897397\n\n" +
           "👉 Clique no link acima para falar diretamente com ele.\n\n" +
-          "Se precisar, digite *voltar* para retornar ao menu."
-        );
+          "Se precisar, digite *voltar* para retornar ao menu.", { sendSeen: false });
 
         estadoUsuario[msg.from] = null;
         ultimoMenu[msg.from] = montarMenuPrincipal();
@@ -267,9 +267,11 @@ client.on("message", async (msg) => {
 
 
       if (texto === "3") {
-        await delay(500);
-
-        await msg.reply(
+        await delay(500);
+
+
+
+        await client.sendMessage(msg.from,
           "Perfeito! 👌\n\n" +
           "Para atendimento em *São Paulo*, o responsável é:\n\n" +
           "*João Soares*\n" +
@@ -277,8 +279,7 @@ client.on("message", async (msg) => {
           "📞 WhatsApp: (19) 99718-8587\n" +
           "🔗 https://wa.me/5519997188587\n\n" +
           "👉 Clique no link acima para falar diretamente com ele.\n\n" +
-          "Se precisar, digite *voltar* para retornar ao menu."
-        );
+          "Se precisar, digite *voltar* para retornar ao menu.", { sendSeen: false });
 
         estadoUsuario[msg.from] = null;
         ultimoMenu[msg.from] = montarMenuPrincipal();
@@ -303,9 +304,11 @@ client.on("message", async (msg) => {
 
     // 2 - Cliente (adm/financeiro) -> Lucas
     if (texto === "2") {
-      await delay(500);
-
-      await msg.reply(
+      await delay(500);
+
+
+
+      await client.sendMessage(msg.from,
         "Perfeito! 👌\n\n" +
         "Para tratar de questões *administrativas ou financeiras*, o responsável é:\n\n" +
         "*Lucas Morim*\n" +
@@ -313,8 +316,7 @@ client.on("message", async (msg) => {
         "📞 WhatsApp: (51) 9292-2628\n" +
         "🔗 https://wa.me/555192922628\n\n" +
         "👉 Clique no link acima para falar diretamente com ele.\n\n" +
-        "Se precisar, digite *voltar* para retornar ao menu."
-      );
+        "Se precisar, digite *voltar* para retornar ao menu.", { sendSeen: false });
 
       estadoUsuario[msg.from] = null;
       ultimoMenu[msg.from] = montarMenuPrincipal();
@@ -323,15 +325,16 @@ client.on("message", async (msg) => {
 
     // 3 - Currículos
     if (texto === "3") {
-      await delay(500);
-
-      await msg.reply(
+      await delay(500);
+
+
+
+      await client.sendMessage(msg.from,
         "Perfeito! 👌\n\n" +
         "Envie seu currículo por e-mail para:\n\n" +
         "📧 *recrutamento@otimizare.com*\n\n" +
         "Se possível, envie em PDF, informe a área de interesse e se apresente, fale um pouco sobre você e/ou sua experiência, no corpo do e-mail.\n\n" +
-        "Se precisar, digite *voltar* para retornar ao menu."
-      );
+        "Se precisar, digite *voltar* para retornar ao menu.", { sendSeen: false });
 
       estadoUsuario[msg.from] = null;
       ultimoMenu[msg.from] = montarMenuPrincipal();
@@ -353,7 +356,7 @@ client.on("message", async (msg) => {
     // se estiver em algum estado (ex.: submenu), aí sim usa a mensagem de erro e volta pro início
     estadoUsuario[msg.from] = null;
     const menu = montarMenuPrincipal();
-    await msg.reply("Não entendi. 🙂\n\nVamos começar de novo pelo menu principal:");
+    await client.sendMessage(msg.from, "Não entendi. 🙂\n\nVamos começar de novo pelo menu principal:", { sendSeen: false });
     await enviarEMemorizarMenu(msg, menu);
     return;
 
