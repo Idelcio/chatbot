@@ -73,20 +73,21 @@ const MENU_REGIOES =
 // =====================================
 // FUNÇÃO: enviar e memorizar menu da etapa
 // =====================================
-const enviarEMemorizarMenu = async (to, chat, textoMenu) => {
-  ultimoMenu[to] = textoMenu;
+const enviarEMemorizarMenu = async (msg, textoMenu) => {
+  ultimoMenu[msg.from] = textoMenu;
 
   try {
+    const chat = await msg.getChat();
     await delay(300);
     await chat.sendStateTyping();
     await delay(900);
 
-    await chat.sendMessage(textoMenu);
+    await msg.reply(textoMenu);
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error.message);
-    // Fallback: tenta enviar sem typing
+    // Fallback: tenta enviar direto
     try {
-      await chat.sendMessage(textoMenu);
+      await msg.reply(textoMenu);
     } catch (fallbackError) {
       console.error("Erro no fallback:", fallbackError.message);
     }
@@ -96,23 +97,24 @@ const enviarEMemorizarMenu = async (to, chat, textoMenu) => {
 // =====================================
 // FUNÇÃO: fallback (não entendi + reenvia menu da etapa atual)
 // =====================================
-const naoEntendiEReenviaMenuAtual = async (to, chat) => {
+const naoEntendiEReenviaMenuAtual = async (msg) => {
   try {
+    const chat = await msg.getChat();
     await delay(300);
     await chat.sendStateTyping();
     await delay(900);
 
-    await chat.sendMessage(
+    await msg.reply(
       "Não entendi. 🙂\n\nPor favor, responda usando as opções do menu."
     );
 
-    const menu = ultimoMenu[to] || montarMenuPrincipal();
+    const menu = ultimoMenu[msg.from] || montarMenuPrincipal();
 
     await delay(200);
     await chat.sendStateTyping();
     await delay(700);
 
-    await chat.sendMessage(menu);
+    await msg.reply(menu);
   } catch (error) {
     console.error("Erro ao enviar mensagem de fallback:", error.message);
   }
@@ -187,13 +189,13 @@ client.on("message", async (msg) => {
       await chat.sendStateTyping();
       await delay(900);
 
-      await chat.sendMessage(
+      await msg.reply(
         "No momento eu não consigo reproduzir áudios, fotos ou vídeos. 🙂\n\n" +
         "Por favor, responda usando as opções do *menu*."
       );
 
       const menu = montarMenuPrincipal();
-      await enviarEMemorizarMenu(msg.from, chat, menu);
+      await enviarEMemorizarMenu(msg, menu);
       return;
     }
 
@@ -205,7 +207,7 @@ client.on("message", async (msg) => {
       menuEnviado[msg.from] = true;
 
       const menu = montarMenuPrincipal();
-      await enviarEMemorizarMenu(msg.from, chat, menu);
+      await enviarEMemorizarMenu(msg, menu);
       return;
     }
 
@@ -217,7 +219,7 @@ client.on("message", async (msg) => {
       estadoUsuario[msg.from] = null;
 
       const menu = montarMenuPrincipal();
-      await enviarEMemorizarMenu(msg.from, chat, menu);
+      await enviarEMemorizarMenu(msg, menu);
       return;
     }
 
@@ -230,7 +232,7 @@ client.on("message", async (msg) => {
         await chat.sendStateTyping();
         await delay(900);
 
-        await chat.sendMessage(
+        await msg.reply(
           "Perfeito! 👌\n\n" +
           "O responsável é:\n\n" +
           "*Lucas Morim*\n" +
@@ -251,7 +253,7 @@ client.on("message", async (msg) => {
         await chat.sendStateTyping();
         await delay(900);
 
-        await chat.sendMessage(
+        await msg.reply(
           "Perfeito! 👌\n\n" +
           "Para atendimento no *Rio Grande do Sul*, o responsável é:\n\n" +
           "*Lucas Morim*\n" +
@@ -273,7 +275,7 @@ client.on("message", async (msg) => {
         await chat.sendStateTyping();
         await delay(900);
 
-        await chat.sendMessage(
+        await msg.reply(
           "Perfeito! 👌\n\n" +
           "Para atendimento em *Santa Catarina*, o responsável é:\n\n" +
           "*Lucas Morim*\n" +
@@ -295,7 +297,7 @@ client.on("message", async (msg) => {
         await chat.sendStateTyping();
         await delay(900);
 
-        await chat.sendMessage(
+        await msg.reply(
           "Perfeito! 👌\n\n" +
           "Para atendimento em *São Paulo*, o responsável é:\n\n" +
           "*João Soares*\n" +
@@ -312,7 +314,7 @@ client.on("message", async (msg) => {
       }
 
       // Qualquer coisa fora das opções no submenu -> não entendi + reenvia menu atual
-      await naoEntendiEReenviaMenuAtual(msg.from, chat);
+      await naoEntendiEReenviaMenuAtual(msg);
       return;
     }
 
@@ -323,7 +325,7 @@ client.on("message", async (msg) => {
     // 1 - Serviços e equipamentos
     if (texto === "1") {
       estadoUsuario[msg.from] = "op1_escolhendo_regiao";
-      await enviarEMemorizarMenu(msg.from, chat, MENU_REGIOES);
+      await enviarEMemorizarMenu(msg, MENU_REGIOES);
       return;
     }
 
@@ -333,7 +335,7 @@ client.on("message", async (msg) => {
       await chat.sendStateTyping();
       await delay(900);
 
-      await chat.sendMessage(
+      await msg.reply(
         "Perfeito! 👌\n\n" +
         "Para tratar de questões *administrativas ou financeiras*, o responsável é:\n\n" +
         "*Lucas Morim*\n" +
@@ -355,7 +357,7 @@ client.on("message", async (msg) => {
       await chat.sendStateTyping();
       await delay(900);
 
-      await chat.sendMessage(
+      await msg.reply(
         "Perfeito! 👌\n\n" +
         "Envie seu currículo por e-mail para:\n\n" +
         "📧 *recrutamento@otimizare.com*\n\n" +
@@ -375,7 +377,7 @@ client.on("message", async (msg) => {
     // se estiver NO MENU PRINCIPAL (sem estado)
     if (!estadoUsuario[msg.from]) {
       const menu = montarMenuPrincipal();
-      await enviarEMemorizarMenu(msg.from, chat, menu);
+      await enviarEMemorizarMenu(msg, menu);
 
       return;
     }
@@ -383,8 +385,8 @@ client.on("message", async (msg) => {
     // se estiver em algum estado (ex.: submenu), aí sim usa a mensagem de erro e volta pro início
     estadoUsuario[msg.from] = null;
     const menu = montarMenuPrincipal();
-    await chat.sendMessage("Não entendi. 🙂\n\nVamos começar de novo pelo menu principal:");
-    await enviarEMemorizarMenu(msg.from, chat, menu);
+    await msg.reply("Não entendi. 🙂\n\nVamos começar de novo pelo menu principal:");
+    await enviarEMemorizarMenu(msg, menu);
     return;
 
   } catch (error) {
