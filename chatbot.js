@@ -294,6 +294,7 @@ client.on("message", async (msg) => {
           "O responsável é:\n\n" +
           "*Lucas Morim*\n" +
           "Diretor Comercial – Otimizare\n" +
+          "📧 *lucas.morim@otimizare.com*\n" +
           "📞 WhatsApp: (51) 9292-2628\n" +
           "🔗 https://wa.me/555192922628\n\n" +
           "👉 Clique no link acima para falar diretamente com ele.\n\n" +
@@ -314,6 +315,7 @@ client.on("message", async (msg) => {
           "Para atendimento no *Rio Grande do Sul*, o responsável é:\n\n" +
           "*Lucas Morim*\n" +
           "Diretor Comercial – Otimizare\n" +
+          "📧 *lucas.morim@otimizare.com*\n" +
           "📞 WhatsApp: (51) 9292-2628\n" +
           "🔗 https://wa.me/555192922628\n\n" +
           "👉 Clique no link acima para falar diretamente com ele.\n\n" +
@@ -335,6 +337,7 @@ client.on("message", async (msg) => {
           "Para atendimento em *Santa Catarina*, o responsável é:\n\n" +
           "*Lucas Morim*\n" +
           "Diretor Comercial – Otimizare\n" +
+          "📧 *lucas.morim@otimizare.com*\n" +
           "📞 WhatsApp: (47) 9289-7397\n" +
           "🔗 https://wa.me/554792897397\n\n" +
           "👉 Clique no link acima para falar diretamente com ele.\n\n" +
@@ -356,6 +359,7 @@ client.on("message", async (msg) => {
           "Para atendimento em *São Paulo*, o responsável é:\n\n" +
           "*João Soares*\n" +
           "Gestor Comercial – Região SP\n" +
+          "📧 *joao.soares@gmail.com*\n" +
           "📞 WhatsApp: (19) 99718-8587\n" +
           "🔗 https://wa.me/5519997188587\n\n" +
           "👉 Clique no link acima para falar diretamente com ele.\n\n" +
@@ -393,6 +397,7 @@ client.on("message", async (msg) => {
         "Para tratar de questões *administrativas ou financeiras*, o responsável é:\n\n" +
         "*Lucas Morim*\n" +
         "Diretor Comercial – Otimizare\n" +
+        "📧 *lucas.morim@otimizare.com*\n" +
         "📞 WhatsApp: (51) 9292-2628\n" +
         "🔗 https://wa.me/555192922628\n\n" +
         "👉 Clique no link acima para falar diretamente com ele.\n\n" +
