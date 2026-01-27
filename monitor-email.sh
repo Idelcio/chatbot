@@ -8,7 +8,8 @@
 # =====================================
 # CONFIGURAÇÕES - EDITE AQUI
 # =====================================
-EMAIL_DESTINO="idelcioforest@gmail.com"           # Email que vai receber os alertas
+EMAIL_DESTINO_1="idelcioforest@gmail.com"         # Email 1 que vai receber os alertas
+EMAIL_DESTINO_2="Marcos.caetano@otimizare.com"    # Email 2 que vai receber os alertas
 EMAIL_REMETENTE="idelcioforest@gmail.com"         # Email do Gmail que vai enviar
 SENHA_APP_GMAIL="wqft rvgu kzbo ejjt"             # Senha de app do Gmail
 
@@ -23,31 +24,49 @@ enviar_email() {
     local ASSUNTO="$1"
     local MENSAGEM="$2"
     
-    # Criar arquivo temporário com a mensagem
-    local TEMP_MSG="/tmp/email_msg_$$.txt"
-    
-    cat > "$TEMP_MSG" << EOF
+    # Enviar para o primeiro destinatário
+    local TEMP_MSG1="/tmp/email_msg1_$$.txt"
+    cat > "$TEMP_MSG1" << EOF
 From: Chatbot Monitor <$EMAIL_REMETENTE>
-To: $EMAIL_DESTINO
+To: $EMAIL_DESTINO_1
 Subject: $ASSUNTO
 Content-Type: text/plain; charset=UTF-8
 
 $MENSAGEM
 EOF
 
-    # Enviar via curl + Gmail SMTP
     curl --url 'smtps://smtp.gmail.com:465' \
          --ssl-reqd \
          --mail-from "$EMAIL_REMETENTE" \
-         --mail-rcpt "$EMAIL_DESTINO" \
+         --mail-rcpt "$EMAIL_DESTINO_1" \
          --user "$EMAIL_REMETENTE:$SENHA_APP_GMAIL" \
-         --upload-file "$TEMP_MSG" \
+         --upload-file "$TEMP_MSG1" \
          --silent
     
-    # Remover arquivo temporário
-    rm -f "$TEMP_MSG"
+    rm -f "$TEMP_MSG1"
     
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - Email enviado: $ASSUNTO" >> "$LOG_FILE"
+    # Enviar para o segundo destinatário
+    local TEMP_MSG2="/tmp/email_msg2_$$.txt"
+    cat > "$TEMP_MSG2" << EOF
+From: Chatbot Monitor <$EMAIL_REMETENTE>
+To: $EMAIL_DESTINO_2
+Subject: $ASSUNTO
+Content-Type: text/plain; charset=UTF-8
+
+$MENSAGEM
+EOF
+
+    curl --url 'smtps://smtp.gmail.com:465' \
+         --ssl-reqd \
+         --mail-from "$EMAIL_REMETENTE" \
+         --mail-rcpt "$EMAIL_DESTINO_2" \
+         --user "$EMAIL_REMETENTE:$SENHA_APP_GMAIL" \
+         --upload-file "$TEMP_MSG2" \
+         --silent
+    
+    rm -f "$TEMP_MSG2"
+    
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Email enviado para $EMAIL_DESTINO_1 e $EMAIL_DESTINO_2: $ASSUNTO" >> "$LOG_FILE"
 }
 
 # =====================================
