@@ -3,6 +3,30 @@
 // =====================================
 const qrcode = require("qrcode-terminal");
 const { Client, LocalAuth } = require("whatsapp-web.js");
+const { exec } = require("child_process");
+
+// =====================================
+// CONFIGURAÇÕES DE SEGURANÇA
+// =====================================
+const MAX_QR_ATTEMPTS = 3; // Máximo de tentativas de QR code
+const QR_TIMEOUT_MS = 60000; // Timeout de 60 segundos para cada QR code
+let qrAttempts = 0;
+let qrTimeout = null;
+let isAuthenticated = false;
+
+// =====================================
+// FUNÇÃO: Limpar processos Chrome órfãos
+// =====================================
+const cleanupChromeProcesses = () => {
+  console.log("🧹 Limpando processos Chrome órfãos...");
+  exec("pkill -f 'chrome.*--type=renderer' || true", (error) => {
+    if (error) {
+      console.log("⚠️ Nenhum processo Chrome órfão encontrado");
+    } else {
+      console.log("✅ Processos Chrome órfãos limpos");
+    }
+  });
+};
 
 // =====================================
 // CONFIGURAÇÃO DO CLIENTE
@@ -17,8 +41,11 @@ const client = new Client({
       "--disable-dev-shm-usage",
       "--disable-gpu",
       "--single-process",
+      "--no-zygote",
+      "--disable-extensions",
     ],
   },
+  qrMaxRetries: MAX_QR_ATTEMPTS,
 });
 
 // =====================================
@@ -80,7 +107,21 @@ const enviarEMemorizarMenu = async (msg, textoMenu) => {
     await delay(500);
     await client.sendMessage(msg.from, textoMenu, { sendSeen: false });
   } catch (error) {
+    // Ignora erro markedUnread (não é crítico)
+    if (error.message && error.message.includes("markedUnread")) {
+      console.log("⚠️ Aviso (não crítico): erro markedUnread ignorado");
+      return;
+    }
+
     console.error("Erro ao enviar mensagem:", error.message);
+
+    // Tenta reenviar uma vez após 2 segundos
+    try {
+      await delay(2000);
+      await client.sendMessage(msg.from, textoMenu, { sendSeen: false });
+    } catch (retryError) {
+      console.error("Erro na segunda tentativa:", retryError.message);
+    }
   }
 };
 
@@ -101,11 +142,28 @@ const naoEntendiEReenviaMenuAtual = async (msg) => {
 };
 
 // =====================================
-// QR CODE
+// QR CODE (com timeout e limite de tentativas)
 // =====================================
 client.on("qr", (qr) => {
-  console.log("📲 Escaneie o QR Code abaixo:");
+  qrAttempts++;
+  console.log(`📲 Tentativa ${qrAttempts}/${MAX_QR_ATTEMPTS} - Escaneie o QR Code abaixo:`);
   qrcode.generate(qr, { small: true });
+
+  // Limpa timeout anterior se existir
+  if (qrTimeout) {
+    clearTimeout(qrTimeout);
+  }
+
+  // Define timeout para esta tentativa
+  qrTimeout = setTimeout(() => {
+    if (!isAuthenticated && qrAttempts >= MAX_QR_ATTEMPTS) {
+      console.error("❌ Limite de tentativas de QR code atingido. Reiniciando em 30 segundos...");
+      cleanupChromeProcesses();
+      setTimeout(() => {
+        process.exit(1); // PM2 vai reiniciar automaticamente
+      }, 30000);
+    }
+  }, QR_TIMEOUT_MS);
 });
 
 // =====================================
@@ -113,13 +171,35 @@ client.on("qr", (qr) => {
 // =====================================
 client.on("ready", () => {
   console.log("✅ Tudo certo! WhatsApp conectado.");
+  isAuthenticated = true;
+  qrAttempts = 0;
+
+  // Limpa timeout de QR code se existir
+  if (qrTimeout) {
+    clearTimeout(qrTimeout);
+    qrTimeout = null;
+  }
+
+  // Limpa processos Chrome órfãos ao conectar
+  cleanupChromeProcesses();
 });
 
 // =====================================
-// DESCONEXÃO
+// DESCONEXÃO (com limpeza e reconexão)
 // =====================================
 client.on("disconnected", (reason) => {
   console.log("⚠️ Desconectado:", reason);
+  isAuthenticated = false;
+  qrAttempts = 0;
+
+  // Limpa processos Chrome órfãos
+  cleanupChromeProcesses();
+
+  // Aguarda 5 segundos e reinicia o processo (PM2 vai gerenciar)
+  console.log("🔄 Reiniciando em 5 segundos...");
+  setTimeout(() => {
+    process.exit(1);
+  }, 5000);
 });
 
 // =====================================
